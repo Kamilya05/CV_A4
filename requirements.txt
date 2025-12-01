@@ -1,6 +1,5 @@
 numpy
 scipy
-open3d>=0.17.0
 trimesh
 scikit-learn
 imageio
@@ -8,3 +7,4 @@ opencv-python
 PyYAML
 tqdm
 pynvx
+plyfile
