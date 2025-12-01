@@ -188,7 +188,10 @@ def build_trajectory_for_scene(ply_path, output_json,
     # Keypoints
     keypts = farthest_point_sampling(pts, k=kpts)
     keyidx = ((keypts - mins) / vs).astype(int)
-    keyidx = [tuple(np.clip(k, 0, dims-1)) for k in keyidx]
+    # Clamp indices within grid
+    dims_arr = np.array(dims) - 1
+    keyidx = [tuple(np.clip(np.array(k), 0, dims_arr)) for k in keyidx]
+
 
     # A* connections
     path_vox = []
