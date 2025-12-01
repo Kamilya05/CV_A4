@@ -124,14 +124,35 @@ def astar(grid, start, goal):
 # --------------------------------------------------
 # 5. Keypoint sampling (coverage)
 # --------------------------------------------------
-def farthest_point_sampling(points, k=12):
-    pts = points
-    sel = [pts.mean(axis=0)]
-    for _ in range(k):
-        d = np.linalg.norm(pts - np.array(sel)[:,None].transpose(1,0,2), axis=2)
-        md = d.min(axis=0)
-        sel.append(pts[np.argmax(md)])
-    return np.array(sel[1:])
+def farthest_point_sampling(points, k=12, sample_size=30000):
+    N = len(points)
+
+    # --- 1) random uniform subsample (reduce millions → ~30k)
+    if N > sample_size:
+        idx = np.random.choice(N, sample_size, replace=False)
+        pts = points[idx]
+    else:
+        pts = points
+
+    # --- 2) standard FPS on reduced point cloud
+    M = len(pts)
+    fps_idx = []
+    dists = np.full(M, 1e10, dtype=np.float32)
+
+    # start from centroid
+    start = np.linalg.norm(pts - pts.mean(axis=0), axis=1).argmax()
+    fps_idx.append(start)
+
+    for _ in range(1, k):
+        last = pts[fps_idx[-1]]
+        diff = pts - last
+        dist = np.einsum('ij,ij->i', diff, diff)   # fast squared distance
+
+        dists = np.minimum(dists, dist)
+        fps_idx.append(np.argmax(dists))
+
+    return pts[fps_idx]
+
 
 
 # --------------------------------------------------
