@@ -1,0 +1,8 @@
+torch
+torchvision
+diff-gaussian-rasterization
+plyfile
+opencv-python
+scipy
+pillow
+pyyaml
