@@ -12,7 +12,7 @@
 
 ---
 ## 🔗 Link to videos
-https://disk.yandex.ru/d/19OucAQHIf_60g
+https://disk.yandex.ru/d/19OucAQHIf_60g (videos are too big for github)
 
 
 
